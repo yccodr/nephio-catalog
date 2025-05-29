@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: emqx-env
+  namespace: default
+  labels:
+    app.kubernetes.io/name: emqx
+data:
+  EMQX_NAME: emqx
+  EMQX_CLUSTER__DNS__NAME: emqx-headless.default.svc.cluster.local
+  EMQX_CLUSTER__DNS__RECORD_TYPE: srv
+  EMQX_CLUSTER__DISCOVERY_STRATEGY: dns
+  EMQX_DASHBOARD__DEFAULT_PASSWORD: public
+  EMQX_DASHBOARD__DEFAULT_USERNAME: admin

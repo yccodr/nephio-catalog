@@ -1,0 +1,9 @@
+apiVersion: ipam.resource.nephio.org/v1alpha1
+kind: IPPrefix
+metadata:
+  name: example-regional # kpt-set: ${networkName}-${clusterName}
+spec:
+  kind: network
+  prefix: 172.21.0.0/24 # kpt-set: ${cidr}
+  networkInstance:
+    name: example # kpt-set: ${networkName}

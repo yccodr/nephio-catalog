@@ -1,0 +1,8 @@
+apiVersion: ""
+kind: KptRevisionMetadata
+metadata:
+  name: catalog-e4d5ebb06afb69b85dddd20189447cbbc31cb787
+  namespace: default
+  creationTimestamp: "2025-05-27T08:12:59Z"
+  resourceVersion: fd5cbd2caeaa307e85c1d6b1bb8b6737561df343
+  uid: c4aaf6fd-7c66-5ead-bdf6-05421284c01b

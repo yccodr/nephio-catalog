@@ -1,0 +1,7 @@
+apiVersion: ipam.resource.nephio.org/v1alpha1
+kind: NetworkInstance
+metadata:
+  name: example # kpt-set: ${networkName}
+spec:
+  prefixes:
+  - prefix: 172.21.0.0/16 # kpt-set: ${cidr}

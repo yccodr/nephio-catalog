@@ -1,0 +1,28 @@
+apiVersion: kpt.dev/v1
+kind: Kptfile
+metadata: # kpt-merge: /subnet
+  name: subnet
+  annotations:
+    config.kubernetes.io/local-config: "true"
+    internal.kpt.dev/upstream-identifier: kpt.dev|Kptfile|default|subnet
+upstream:
+  type: git
+  git:
+    repo: http://192.168.200.10:31000/nephio/core.git
+    directory: subnet
+    ref: subnet/v1
+upstreamLock:
+  type: git
+  git:
+    repo: http://192.168.200.10:31000/nephio/core.git
+    directory: subnet
+    ref: subnet/v1
+    commit: c07fceea8eef94f9fecd7adffd38fd56cfdc7c35
+info:
+  description: Kube-OVN subnet
+pipeline:
+  mutators:
+  - image: gcr.io/kpt-fn/starlark:v0.5.0
+    configPath: set-values.yaml
+  - image: gcr.io/kpt-fn/apply-setters:v0.2.0
+    configPath: setters.yaml

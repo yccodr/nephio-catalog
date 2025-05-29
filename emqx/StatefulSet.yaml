@@ -1,0 +1,92 @@
+# Source: emqx/templates/StatefulSet.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: emqx
+  namespace: default
+  labels:
+    app.kubernetes.io/name: emqx
+    helm.sh/chart: emqx-5.8.6
+    app.kubernetes.io/instance: emqx
+    app.kubernetes.io/managed-by: Helm
+spec:
+  serviceName: emqx-headless
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: emqx
+      app.kubernetes.io/instance: emqx
+  template:
+    metadata:
+      labels:
+        app: emqx
+        version: 5.8.6
+        app.kubernetes.io/name: emqx
+        app.kubernetes.io/instance: emqx
+      annotations:
+        ovn.kubernetes.io/logical_switch: example-subnet # kpt-set: ${subnet}
+    spec:
+      serviceAccountName: emqx
+      volumes:
+      - name: emqx-data
+        emptyDir: {}
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: Always
+        runAsUser: 1000
+        supplementalGroups:
+        - 1000
+      containers:
+      - name: emqx
+        image: emqx/emqx:5.8.6
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+        ports:
+        - name: mqtt
+          containerPort: 1883
+        - name: mqttssl
+          containerPort: 8883
+        - name: ws
+          containerPort: 8083
+        - name: wss
+          containerPort: 8084
+        - name: dashboard
+          containerPort: 18083
+        - name: ekka
+          containerPort: 4370
+        - name: genrpc-manual
+          containerPort: 5369
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: EMQX_HOST
+          value: $(POD_NAME).emqx-headless.default.svc.cluster.local
+        envFrom:
+        - configMapRef:
+            name: emqx-env
+        resources: {}
+        volumeMounts:
+        - name: emqx-data
+          mountPath: /opt/emqx/data
+        readinessProbe:
+          httpGet:
+            path: /status
+            port: 18083
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 30
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: 18083
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          failureThreshold: 10

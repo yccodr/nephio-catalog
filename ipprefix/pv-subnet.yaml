@@ -1,0 +1,16 @@
+apiVersion: config.porch.kpt.dev/v1alpha1
+kind: PackageVariant
+metadata:
+  name: example-regional-subnet # kpt-set: ${networkName}-${clusterName}-subnet
+spec:
+  upstream:
+    repo: catalog
+    package: subnet
+    revision: main
+  downstream:
+    repo: regional # kpt-set: ${clusterName}
+    package: example-subnet # kpt-set: ${networkName}-subnet
+  annotations:
+    approval.nephio.org/policy: initial
+  injectors:
+  - name: example-regional # kpt-set: ${networkName}-${clusterName}
