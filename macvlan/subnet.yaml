@@ -1,13 +1,12 @@
 apiVersion: kubeovn.io/v1
 kind: Subnet
 metadata:
-  name: macvlan # kpt-set: ${subnetName}
+  name: example # kpt-set: ${subnetName}
 spec:
   protocol: IPv4
-  provider: macvlan.default # kpt-set: ${subnetName}.default
-  cidrBlock: 172.17.0.0/16 # kpt-set: ${cidr}
-  gateway: 172.17.0.1 # kpt-set: ${gateway}
+  provider: example.default # kpt-set: ${subnetName}.default
+  cidrBlock: 172.21.0.0/24 # kpt-set: ${cidr}
+  gateway: 172.21.0.0/24 # kpt-set: ${gateway}
   excludeIps:
-    - 172.17.0.1 # kpt-set: ${gateway}
-    - 172.17.0.0..172.17.0.10 # kpt-set: ${excludeIp}
-
+    - 172.21.0.0/24 # kpt-set: ${gateway}
+    - 172.21.0.0..172.21.0.50 # kpt-set: ${excludeIp}

@@ -6,7 +6,6 @@ metadata:
     config.kubernetes.io/local-config: "true"
 info:
   description: sample description
-
 pipeline:
   mutators:
   - image: gcr.io/kpt-fn/starlark:v0.5.0
