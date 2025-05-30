@@ -1,0 +1,7 @@
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: example # kpt-set: ${subnetName}
+  namespace: default
+spec:
+  config: '{ "cniVersion": "0.3.0", "type": "macvlan", "master": "eth0", "mode": "bridge", "ipam": { "type": "kube-ovn", "server_socket": "/run/openvswitch/kube-ovn-daemon.sock", "provider": "example.default"  } }'
